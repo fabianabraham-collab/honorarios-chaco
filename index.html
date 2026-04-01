@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Honorarios — Ley 4228-C Chaco</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
+
+  header { background: #1a3a5c; color: white; padding: 1.5rem 2rem; }
+  header h1 { font-size: 1.3rem; font-weight: 500; }
+  header p { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+  .uma-card {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .uma-card .label { font-size: 13px; color: #666; margin-bottom: 4px; }
+  .uma-card .valor-uma { font-size: 22px; font-weight: 500; color: #1a3a5c; }
+  .uma-card .ref { font-size: 11px; color: #888; margin-top: 2px; }
+  .uma-input-wrap { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
+  .uma-input-wrap input {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 15px;
+    width: 100%;
+    margin-top: 4px;
+  }
+  .uma-input-wrap input:focus { outline: none; border-color: #1a3a5c; }
+  .uma-link { font-size: 12px; color: #1a3a5c; text-decoration: none; display: inline-block; margin-top: 6px; }
+  .uma-link:hover { text-decoration: underline; }
+
+  .fuero-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+  .fuero-btn {
+    background: white;
+    border: 0.5px solid #ccc;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #333;
+    transition: all 0.15s;
+  }
+  .fuero-btn:hover { border-color: #1a3a5c; color: #1a3a5c; }
+  .fuero-btn.active { background: #1a3a5c; color: white; border-color: #1a3a5c; }
+
+  .search-wrap { position: relative; margin-bottom: 1rem; }
+  .search-wrap input {
+    width: 100%;
+    border: 0.5px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  .search-wrap input:focus { outline: none; border-color: #1a3a5c; }
+
+  .process-list { background: white; border: 0.5px solid #ddd; border-radius: 12px; overflow: hidden; }
+  .process-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 1.25rem;
+    border-bottom: 0.5px solid #eee;
+    cursor: pointer;
+    transition: background 0.1s;
+    gap: 1rem;
+  }
+  .process-item:last-child { border-bottom: none; }
+  .process-item:hover { background: #f0f4f8; }
+  .process-item .nombre { font-size: 14px; color: #1a1a1a; flex: 1; }
+  .process-item .uma-badge {
+    background: #e8f0fb;
+    color: #1a3a5c;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+  .process-item .monto { font-size: 13px; color: #444; text-align: right; min-width: 120px; }
+
+  .result-card {
+    background: #1a3a5c;
+    color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .result-card.visible { display: block; }
+  .result-card .proceso-nombre { font-size: 13px; opacity: 0.75; margin-bottom: 4px; }
+  .result-card .proceso-titulo { font-size: 1.1rem; font-weight: 500; margin-bottom: 1rem; }
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .result-metric { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 14px; }
+  .result-metric .rl { font-size: 11px; opacity: 0.7; margin-bottom: 4px; }
+  .result-metric .rv { font-size: 1.3rem; font-weight: 500; }
+  .result-note { font-size: 11px; opacity: 0.65; margin-top: 1rem; }
+
+  .empty { text-align: center; padding: 2.5rem; color: #888; font-size: 14px; }
+
+  footer { text-align: center; font-size: 11px; color: #999; margin-top: 2rem; padding-bottom: 2rem; }
+  footer a { color: #1a3a5c; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Calculadora de Honorarios Profesionales</h1>
+  <p>Ley 4228-C — Provincia del Chaco &nbsp;|&nbsp; Res. SGA N° 538/2026 — CSJN</p>
+</header>
+
+<div class="container">
+
+  <div class="uma-card">
+    <div>
+      <div class="label">Valor UMA vigente</div>
+      <div class="valor-uma" id="uma-display">$92.482</div>
+      <div class="ref">Res. SGA 538/2026 — desde 01/02/2026</div>
+    </div>
+    <div class="uma-input-wrap">
+      <div class="label">Modificar valor UMA ($)</div>
+      <input type="number" id="uma-valor" value="92482" min="1" step="1" />
+      <a href="https://www.cpacf.org.ar/noticia/5201/valores-uma-pjn-ley-27423" target="_blank" class="uma-link">Ver historial de valores UMA →</a>
+    </div>
+  </div>
+
+  <div class="fuero-tabs" id="fuero-tabs">
+    <button class="fuero-btn active" data-fuero="familia">Familia</button>
+    <button class="fuero-btn" data-fuero="civil">Civil y Comercial</button>
+    <button class="fuero-btn" data-fuero="laboral">Laboral</button>
+    <button class="fuero-btn" data-fuero="contencioso">Contencioso Adm.</button>
+    <button class="fuero-btn" data-fuero="consumo">Consumo</button>
+    <button class="fuero-btn" data-fuero="extrajudicial">Extrajudicial</button>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" id="buscador" placeholder="Buscar proceso..." />
+  </div>
+
+  <div class="process-list" id="lista-procesos"></div>
+
+  <div class="result-card" id="result-card">
+    <div class="proceso-nombre" id="res-fuero"></div>
+    <div class="proceso-titulo" id="res-nombre"></div>
+    <div class="result-grid">
+      <div class="result-metric">
+        <div class="rl">Honorario mínimo (UMA)</div>
+        <div class="rv" id="res-uma"></div>
+      </div>
+      <div class="result-metric">
+        <div class="rl">Monto mínimo en pesos</div>
+        <div class="rv" id="res-pesos"></div>
+      </div>
+    </div>
+    <div class="result-note">El monto surge de multiplicar las UMA por el valor vigente. Los honorarios revisten carácter alimentario (art. 4°, Ley 4228-C). La regulación judicial puede superar este mínimo conforme arts. 17 a 21 de la ley.</div>
+  </div>
+
+  <footer>
+    Ley 4228-C — Cámara de Diputados de la Provincia del Chaco — 18/03/2026<br>
+    Valor UMA: <a href="https://www.cpacf.org.ar/noticia/5201/valores-uma-pjn-ley-27423" target="_blank">CPACF</a> &nbsp;|&nbsp;
+    Res. SGA N° 538/2026 — CSJN
+  </footer>
+
+</div>
+
+<script>
+const DATA = {
+  familia: [
+    { nombre: "Divorcio Unilateral", uma: 20 },
+    { nombre: "Divorcio Bilateral", uma: 25 },
+    { nombre: "Liquidación de Comunidad de Bienes", uma: 18 },
+    { nombre: "Nulidad de Matrimonio", uma: 30 },
+    { nombre: "Procesos por violencia familiar", uma: 18 },
+    { nombre: "Autorización para contraer matrimonio", uma: 15 },
+    { nombre: "Medidas cautelares, autosatisfactivas, urgentes, guarda, reintegro y similares", uma: 20 },
+    { nombre: "Procesos de familia sin especial regulación", uma: 20 },
+    { nombre: "Reglamentación e impugnación de filiación", uma: 30 },
+    { nombre: "Declaración de estado de adoptabilidad", uma: 25 },
+    { nombre: "Guarda asistencia y preadoptiva", uma: 15 },
+    { nombre: "Suspensión, pérdida y rehabilitación de la responsabilidad parental", uma: 25 },
+    { nombre: "Restitución internacional de menores", uma: 40 },
+    { nombre: "Medidas de protección", uma: 25 },
+    { nombre: "Tutela y curatela no contradictoria", uma: 25 },
+    { nombre: "Tutela y curatela contradictoria", uma: 30 },
+    { nombre: "Restricción de capacidad o declaración de incapacidad", uma: 35 },
+    { nombre: "Solicitud de apoyo", uma: 20 },
+    { nombre: "Adopción y adopción integral", uma: 35 },
+    { nombre: "Cuidado personal", uma: 20 },
+    { nombre: "Plan de parentalidad o régimen de comunicación", uma: 20 },
+    { nombre: "Rehabilitación de la capacidad jurídica: no contradictoria", uma: 25 },
+    { nombre: "Rehabilitación de la capacidad jurídica: contradictoria", uma: 30 },
+    { nombre: "Inhabilidad por prodigalidad", uma: 30 },
+    { nombre: "Ausencia simple", uma: 20 },
+    { nombre: "Ausencia con presunción de fallecimiento", uma: 20 },
+    { nombre: "Internaciones", uma: 20 },
+    { nombre: "Autorización para disponer, gravar y adquirir bienes de personas con capacidad restringida o incapaces", uma: 20 },
+    { nombre: "Acciones relativas al nombre", uma: 25 },
+    { nombre: "Procesos o procedimientos sin regulación específica en esta ley", uma: 10 },
+    { nombre: "Alimentos provisorios", uma: 20 },
+    { nombre: "Alimentos definitivos", uma: 30 },
+    { nombre: "Cese o modificación de cuota alimentaria", uma: 25 },
+    { nombre: "Autorización supletoria para salir del país", uma: 20 },
+    { nombre: "Ejecución de alimentos", uma: 15 },
+    { nombre: "Ejecución de sentencia", uma: 15 },
+  ],
+  civil: [
+    { nombre: "Juicio sumario", uma: 25 },
+    { nombre: "Juicio sumarísimo", uma: 20 },
+    { nombre: "Beneficio de litigar sin gastos", uma: 10 },
+    { nombre: "Tercerías", uma: 10 },
+    { nombre: "Citación de evicción", uma: 10 },
+    { nombre: "Acción subrogatoria", uma: 15 },
+    { nombre: "Prohibición de innovar", uma: 20 },
+    { nombre: "Innovativa y prohibición de contratar", uma: 20 },
+    { nombre: "Medidas cautelares genéricas sin contenido económico", uma: 20 },
+    { nombre: "Autosatisfactiva", uma: 20 },
+    { nombre: "Tutela anticipada", uma: 20 },
+    { nombre: "Acción meramente declarativa de sentencia", uma: 25 },
+    { nombre: "Incidentes en general", uma: 15 },
+    { nombre: "Diligencia preliminar", uma: 15 },
+    { nombre: "Prueba anticipada", uma: 15 },
+    { nombre: "Prueba pericial anticipada", uma: 20 },
+    { nombre: "División de cosas comunes (art. 640 CPCCCH)", uma: 15 },
+    { nombre: "Copia y renovación de títulos (arts. 761 y 732 del CPCCCH)", uma: 10 },
+    { nombre: "Autorización para comparecer en juicio y ejercer actos jurídicos", uma: 15 },
+    { nombre: "Acción sumaria de responsabilidad por incumplimiento de una orden judicial", uma: 20 },
+    { nombre: "Examen de libros por el socio", uma: 20 },
+    { nombre: "Sucesorios", uma: 15 },
+    { nombre: "Partida de herencia", uma: 18 },
+    { nombre: "Inventariador o tasador judicial", uma: 15 },
+    { nombre: "Juicios ejecutivos y monitorios", uma: 15 },
+    { nombre: "Ejecución de sentencia y honorarios", uma: 15 },
+    { nombre: "Prepara vía ejecutiva", uma: 15 },
+    { nombre: "Acción reales", uma: 30 },
+    { nombre: "Acciones posesorias", uma: 25 },
+    { nombre: "Acción de nulidad en general", uma: 20 },
+    { nombre: "Usucapión", uma: 20 },
+    { nombre: "Desalojo", uma: 20 },
+    { nombre: "Reversión de expropiación", uma: 25 },
+    { nombre: "Cumplimiento de sentencias extranjeras (art. 513 CPCCCH y cc.)", uma: 30 },
+    { nombre: "Homologación de contratos, convenios y acuerdos", uma: 15 },
+    { nombre: "Acción de cambio de nombre societaria, imposición o supresión", uma: 12 },
+    { nombre: "Juicio de rendición de cuentas", uma: 20 },
+    { nombre: "Concursos y quiebras", uma: 25 },
+    { nombre: "Rehabilitación del fallido", uma: 10 },
+    { nombre: "Rechazo inlimine de la quiebra pedida por el deudor", uma: 10 },
+    { nombre: "Incidente de revisión", uma: 10 },
+    { nombre: "Incidente de verificación tardía", uma: 20 },
+  ],
+  laboral: [
+    { nombre: "Demanda", uma: 23 },
+    { nombre: "Contestación de demanda", uma: 24 },
+    { nombre: "Acción de amparo", uma: 16 },
+    { nombre: "Medida cautelar", uma: 8 },
+    { nombre: "Medida autosatisfactiva", uma: 13 },
+    { nombre: "Desalojo laboral", uma: 20 },
+    { nombre: "Embargo preventivo", uma: 20 },
+    { nombre: "Procedimiento abreviado", uma: 16 },
+    { nombre: "Recurso de apelación ante la CAT", uma: 12 },
+    { nombre: "Apelación dictámenes médicos", uma: 10 },
+    { nombre: "Tercería de dominio", uma: 10 },
+    { nombre: "Levantamiento de embargo", uma: 10 },
+    { nombre: "Sustitución de embargo", uma: 10 },
+    { nombre: "Medidas preliminares", uma: 15 },
+    { nombre: "Prueba anticipada", uma: 15 },
+    { nombre: "Ejecución de sentencia", uma: 15 },
+    { nombre: "Revisión de actos administrativos", uma: 10 },
+    { nombre: "Incidentes", uma: 10 },
+    { nombre: "Ejecución de créditos reconocidos", uma: 10 },
+    { nombre: "Restitución de multas", uma: 10 },
+  ],
+  contencioso: [
+    { nombre: "Demanda contenciosa administrativa de plena jurisdicción", uma: 30 },
+    { nombre: "Agotamiento de vía administrativa", uma: 15 },
+    { nombre: "Demanda contenciosa administrativa de ilegitimidad", uma: 30 },
+    { nombre: "Mandamiento de ejecución y prohibición", uma: 30 },
+    { nombre: "Amparo por mora", uma: 30 },
+  ],
+  consumo: [
+    { nombre: "Procesos que se tramiten bajo las normas del Derecho del Consumidor sin objeto susceptible de apreciación pecuniaria", uma: 25 },
+    { nombre: "Procesos de derecho de consumo que, de la aplicación de la escala del art. 19, resulta honorarios inferiores a esta escala", uma: 25 },
+    { nombre: "Intervención ante organismos administrativos de aplicación de la ley 24.240", uma: 10 },
+  ],
+  extrajudicial: [
+    { nombre: "Consulta verbal", uma: 0.5 },
+    { nombre: "Consulta escrita", uma: 1 },
+    { nombre: "Consulta verbal fuera del horario de atención", uma: 1.5 },
+    { nombre: "Estudios fundados sobre tema específico", uma: 4 },
+    { nombre: "Acuerdos extrajudiciales", uma: 10 },
+    { nombre: "Estudio de títulos", uma: 10 },
+    { nombre: "Redacción de CD, telegrama, etc.", uma: 2 },
+    { nombre: "Redacción de denuncias penales sin firma letrada", uma: 5 },
+    { nombre: "Redacción de estatuto de SA o SCA", uma: 20 },
+    { nombre: "Redacción de estatuto de cooperativas", uma: 15 },
+    { nombre: "Redacción de estatuto de otros tipos sociales", uma: 15 },
+    { nombre: "Constitución de personas jurídicas en general", uma: 20 },
+    { nombre: "Inscripción de contrato o estatuto, modificación, prorroga, etc.", uma: 10 },
+    { nombre: "Actuación administrativa", uma: 10 },
+    { nombre: "Trámite ante RPI, RPC, RPA", uma: 15 },
+    { nombre: "Trámite ante Inspección General de Persona Jurídica", uma: 15 },
+    { nombre: "Redacción de otros contratos", uma: 10 },
+    { nombre: "Redacción de testamento", uma: 20 },
+    { nombre: "Estudio de actuaciones judiciales o administrativas", uma: 15 },
+    { nombre: "Asistencia en la realización de actos jurídicos", uma: 5 },
+    { nombre: "Redacción de contrato de locación", uma: 10 },
+    { nombre: "Redacción de boleto de compra venta", uma: 10 },
+    { nombre: "Redacción de reglamentos de copropiedad", uma: 20 },
+    { nombre: "Redacción de contratos de adhesión", uma: 20 },
+    { nombre: "Actuación en la mediación", uma: 10 },
+    { nombre: "Clausura de mediación sin acuerdo", uma: 6 },
+    { nombre: "Actuación en arbitraje", uma: 20 },
+    { nombre: "Asistencia a audiencia de mediación o conciliación", uma: 5 },
+    { nombre: "Juicio ante amigables componedores", uma: 10 },
+    { nombre: "Cobro de créditos extrajudicial", uma: 10 },
+    { nombre: "Declaraciones juradas, fichas o planillas impositivas", uma: 10 },
+    { nombre: "Legalización de partida o documentos", uma: 4 },
+    { nombre: "Inscripción de nacimiento, nombres, estado civil y sus registraciones", uma: 20 },
+    { nombre: "Inscripción de matrículas sin valor económico", uma: 8 },
+    { nombre: "Inscripción Art. 320 CCyCN", uma: 4 },
+    { nombre: "Rubrica de libros contables", uma: 2 },
+    { nombre: "Consulta homonimia", uma: 2 },
+    { nombre: "Inscripción Sociedad constituida en el extranjero", uma: 12 },
+    { nombre: "Inscripción de Sociedad en general", uma: 15 },
+    { nombre: "Trámite de Inscripción ante Inspección de Personería Jurídica", uma: 8 },
+    { nombre: "Transferencia de fondo de comercio", uma: 16 },
+    { nombre: "Inscripción de directorio, gerencia o administrador", uma: 8 },
+    { nombre: "Aumento de capital", uma: 8 },
+    { nombre: "Cancelación por Cambio de Jurisdicción", uma: 8 },
+    { nombre: "Cambio de jurisdicción a la Provincia del Chaco", uma: 12 },
+    { nombre: "Inscripción de Sucursal", uma: 8 },
+    { nombre: "Modificación de contrato. Sesión de cuotas SRL", uma: 12 },
+    { nombre: "Modificación de contrato. Incorporación de herederos SRL", uma: 12 },
+    { nombre: "Prorroga o reconducción de Sociedad", uma: 12 },
+    { nombre: "Solicitud de copias", uma: 6 },
+    { nombre: "Solicitud de certificados", uma: 4 },
+    { nombre: "Cambio de domicilio", uma: 6 },
+    { nombre: "Cambio de sede social", uma: 2 },
+    { nombre: "Autorización sistema contable computarizado", uma: 4 },
+    { nombre: "Inscripción de poder", uma: 1 },
+    { nombre: "Escisión, fusión, liquidación, subsanación, transformación", uma: 8 },
+  ]
+};
+
+const FUERO_LABELS = {
+  familia: "Derecho de Familia",
+  civil: "Civil y Comercial",
+  laboral: "Laboral",
+  contencioso: "Contencioso Administrativo",
+  consumo: "Consumo",
+  extrajudicial: "Actuación Extrajudicial"
+};
+
+let fueroActivo = "familia";
+let umaValor = 92482;
+
+function formatPesos(n) {
+  return "$" + Math.round(n).toLocaleString("es-AR");
+}
+
+function renderLista() {
+  const busqueda = document.getElementById("buscador").value.toLowerCase();
+  const lista = document.getElementById("lista-procesos");
+  const procesos = DATA[fueroActivo].filter(p =>
+    p.nombre.toLowerCase().includes(busqueda)
+  );
+  if (procesos.length === 0) {
+    lista.innerHTML = '<div class="empty">No se encontraron procesos.</div>';
+    return;
+  }
+  lista.innerHTML = procesos.map((p, i) => `
+    <div class="process-item" onclick="seleccionar('${fueroActivo}', ${DATA[fueroActivo].indexOf(p)})">
+      <span class="nombre">${p.nombre}</span>
+      <span class="uma-badge">${p.uma} UMA</span>
+      <span class="monto">${formatPesos(p.uma * umaValor)}</span>
+    </div>
+  `).join("");
+}
+
+function seleccionar(fuero, idx) {
+  const p = DATA[fuero][idx];
+  const card = document.getElementById("result-card");
+  document.getElementById("res-fuero").textContent = FUERO_LABELS[fuero];
+  document.getElementById("res-nombre").textContent = p.nombre;
+  document.getElementById("res-uma").textContent = p.uma + " UMA";
+  document.getElementById("res-pesos").textContent = formatPesos(p.uma * umaValor);
+  card.classList.add("visible");
+  card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+document.getElementById("uma-valor").addEventListener("input", function() {
+  const v = parseFloat(this.value);
+  if (!isNaN(v) && v > 0) {
+    umaValor = v;
+    document.getElementById("uma-display").textContent = "$" + Math.round(v).toLocaleString("es-AR");
+    renderLista();
+    const card = document.getElementById("result-card");
+    if (card.classList.contains("visible")) {
+      document.getElementById("res-pesos").textContent = formatPesos(
+        parseFloat(document.getElementById("res-uma").textContent) * umaValor
+      );
+    }
+  }
+});
+
+document.querySelectorAll(".fuero-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".fuero-btn").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    fueroActivo = this.dataset.fuero;
+    document.getElementById("buscador").value = "";
+    document.getElementById("result-card").classList.remove("visible");
+    renderLista();
+  });
+});
+
+document.getElementById("buscador").addEventListener("input", renderLista);
+
+renderLista();
+</script>
+</body>
+</html>
