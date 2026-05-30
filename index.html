@@ -14,33 +14,77 @@
 
   .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
 
+  /* ── PANEL UMA MEJORADO ── */
   .uma-card {
     background: white;
     border: 0.5px solid #ddd;
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
     margin-bottom: 1.5rem;
+  }
+  .uma-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.5rem;
     flex-wrap: wrap;
+    margin-bottom: 0.85rem;
   }
+  .uma-info { flex: 1; min-width: 160px; }
   .uma-card .label { font-size: 13px; color: #666; margin-bottom: 4px; }
   .uma-card .valor-uma { font-size: 22px; font-weight: 500; color: #1a3a5c; }
-  .uma-card .ref { font-size: 11px; color: #888; margin-top: 2px; }
+  .uma-card .ref { font-size: 11px; color: #888; margin-top: 2px; line-height: 1.6; }
+  .uma-card .ref a { color: #1a3a5c; text-decoration: none; }
+  .uma-card .ref a:hover { text-decoration: underline; }
+
   .uma-input-wrap { display: flex; flex-direction: column; flex: 1; min-width: 180px; }
+  .uma-input-wrap > .label { font-size: 13px; color: #666; margin-bottom: 4px; }
+  .uma-row { display: flex; gap: 8px; align-items: center; }
   .uma-input-wrap input {
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 8px 12px;
     font-size: 15px;
     width: 100%;
-    margin-top: 4px;
+    font-family: inherit;
+    -webkit-appearance: none;
   }
   .uma-input-wrap input:focus { outline: none; border-color: #1a3a5c; }
+
+  /* Badge de estado */
+  .badge-uma {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-top: 6px;
+  }
+  .badge-ok   { background: #dcfce7; color: #166534; }
+  .badge-warn { background: #fef3c7; color: #92400e; }
+
+  /* Botón de consulta */
+  .btn-fetch {
+    background: #1a3a5c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .btn-fetch:hover { background: #2a5a8c; }
+  .btn-fetch:disabled { opacity: 0.55; cursor: default; }
+
   .uma-link { font-size: 12px; color: #1a3a5c; text-decoration: none; display: inline-block; margin-top: 6px; }
   .uma-link:hover { text-decoration: underline; }
 
+  /* ── TABS FUERO ── */
   .fuero-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -56,6 +100,7 @@
     cursor: pointer;
     color: #333;
     transition: all 0.15s;
+    font-family: inherit;
   }
   .fuero-btn:hover { border-color: #1a3a5c; color: #1a3a5c; }
   .fuero-btn.active { background: #1a3a5c; color: white; border-color: #1a3a5c; }
@@ -67,6 +112,7 @@
     border-radius: 8px;
     padding: 10px 16px;
     font-size: 14px;
+    font-family: inherit;
   }
   .search-wrap input:focus { outline: none; border-color: #1a3a5c; }
 
@@ -114,6 +160,59 @@
 
   .empty { text-align: center; padding: 2.5rem; color: #888; font-size: 14px; }
 
+  /* ── CALCULADORA ESCALAS % ── */
+  .escala-card {
+    background: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .escala-item {
+    padding: 14px 1.25rem;
+    border-bottom: 0.5px solid #eee;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .escala-item:last-child { border-bottom: none; }
+  .escala-item:hover { background: #f0f4f8; }
+  .escala-item.selected { background: #e8f0fb; }
+  .escala-item .e-nombre { font-size: 14px; color: #1a1a1a; font-weight: 500; margin-bottom: 3px; }
+  .escala-item .e-detalle { font-size: 12px; color: #666; }
+  .escala-item .e-ref { font-size: 11px; color: #1a3a5c; margin-top: 2px; }
+
+  .escala-calc {
+    background: #1a3a5c;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 0;
+    display: none;
+    color: white;
+  }
+  .escala-calc.visible { display: block; }
+  .escala-calc .ec-titulo { font-size: 1rem; font-weight: 500; margin-bottom: 1rem; opacity: 0.9; }
+  .escala-calc .ec-label { font-size: 12px; opacity: 0.75; margin-bottom: 5px; }
+  .monto-input-wrap { display: flex; gap: 8px; align-items: center; margin-bottom: 1.25rem; }
+  .monto-input-wrap input {
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    padding: 9px 13px;
+    font-size: 15px;
+    background: rgba(255,255,255,0.12);
+    color: white;
+    font-family: inherit;
+    flex: 1;
+    -webkit-appearance: none;
+  }
+  .monto-input-wrap input::placeholder { color: rgba(255,255,255,0.45); }
+  .monto-input-wrap input:focus { outline: none; border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.18); }
+  .ec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ec-metric { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 11px 13px; }
+  .ec-metric .eml { font-size: 11px; opacity: 0.7; margin-bottom: 3px; }
+  .ec-metric .emv { font-size: 1.1rem; font-weight: 600; }
+  .ec-note { font-size: 11px; opacity: 0.6; margin-top: 1rem; line-height: 1.6; }
+  .ec-placeholder { font-size: 13px; opacity: 0.6; text-align: center; padding: 1.5rem 0; }
+
   footer { text-align: center; font-size: 11px; color: #999; margin-top: 2rem; padding-bottom: 2rem; }
   footer a { color: #1a3a5c; text-decoration: none; }
 </style>
@@ -122,21 +221,28 @@
 
 <header>
   <h1>Calculadora de Honorarios Profesionales</h1>
-  <p>Ley 4228-C — Provincia del Chaco &nbsp;|&nbsp; Res. SGA N° 538/2026 — CSJN</p>
+  <p>Ley 4228-C — Provincia del Chaco &nbsp;|&nbsp; Sistema UMA con actualización automática — CSJN</p>
 </header>
 
 <div class="container">
 
+  <!-- PANEL UMA MEJORADO -->
   <div class="uma-card">
-    <div>
-      <div class="label">Valor UMA vigente</div>
-      <div class="valor-uma" id="uma-display">$92.482</div>
-      <div class="ref">Res. SGA 538/2026 — desde 01/02/2026</div>
-    </div>
-    <div class="uma-input-wrap">
-      <div class="label">Modificar valor UMA ($)</div>
-      <input type="number" id="uma-valor" value="92482" min="1" step="1" />
-      <a href="https://www.cpacf.org.ar/noticia/5201/valores-uma-pjn-ley-27423" target="_blank" class="uma-link">Ver historial de valores UMA →</a>
+    <div class="uma-top">
+      <div class="uma-info">
+        <div class="label">Valor UMA vigente</div>
+        <div class="valor-uma" id="uma-display">$95.626</div>
+        <div class="ref" id="uma-ref">Res. SGA N° 1076/2026 — desde 1° de marzo de 2026</div>
+        <span id="uma-badge" class="badge-uma badge-warn">⚠ Último valor conocido</span>
+      </div>
+      <div class="uma-input-wrap">
+        <div class="label">Modificar o actualizar valor UMA ($)</div>
+        <div class="uma-row">
+          <input type="number" id="uma-valor" value="95626" min="1" step="1" inputmode="numeric" />
+          <button class="btn-fetch" id="btn-fetch" title="Consultar valor oficial CSJN">↻ Actualizar</button>
+        </div>
+        <a href="https://www.csjn.gov.ar/transparencia/uma" target="_blank" rel="noopener" class="uma-link">Ver historial en csjn.gov.ar →</a>
+      </div>
     </div>
   </div>
 
@@ -147,10 +253,12 @@
     <button class="fuero-btn" data-fuero="contencioso">Contencioso Adm.</button>
     <button class="fuero-btn" data-fuero="consumo">Consumo</button>
     <button class="fuero-btn" data-fuero="extrajudicial">Extrajudicial</button>
+    <button class="fuero-btn" data-fuero="exhortos">Exhortos y Oficios</button>
+    <button class="fuero-btn" data-fuero="escalas">Escalas % (contenido económico)</button>
   </div>
 
   <div class="search-wrap">
-    <input type="text" id="buscador" placeholder="Buscar proceso..." />
+    <input type="text" id="buscador" placeholder="Buscar proceso..." autocomplete="off" />
   </div>
 
   <div class="process-list" id="lista-procesos"></div>
@@ -171,15 +279,26 @@
     <div class="result-note">El monto surge de multiplicar las UMA por el valor vigente. Los honorarios revisten carácter alimentario (art. 4°, Ley 4228-C). La regulación judicial puede superar este mínimo conforme arts. 17 a 21 de la ley.</div>
   </div>
 
+  <!-- PANEL ESCALAS PORCENTUALES -->
+  <div id="panel-escalas" style="display:none">
+    <div class="escala-card" id="lista-escalas"></div>
+    <div class="escala-calc" id="escala-calc">
+      <div class="ec-titulo" id="ec-titulo">Seleccioná una escala para calcular</div>
+      <div id="ec-body">
+        <div class="ec-placeholder">↑ Seleccioná una escala de la lista</div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     Ley 4228-C — Cámara de Diputados de la Provincia del Chaco — 18/03/2026<br>
-    Valor UMA: <a href="https://www.cpacf.org.ar/noticia/5201/valores-uma-pjn-ley-27423" target="_blank">CPACF</a> &nbsp;|&nbsp;
-    Res. SGA N° 538/2026 — CSJN
+    Valor UMA: <a href="https://www.csjn.gov.ar/transparencia/uma" target="_blank">csjn.gov.ar/transparencia/uma</a>
   </footer>
 
 </div>
 
 <script>
+/* ════════════ BASE DE DATOS ════════════ */
 const DATA = {
   familia: [
     { nombre: "Divorcio Unilateral", uma: 20 },
@@ -363,19 +482,239 @@ const FUERO_LABELS = {
   laboral: "Laboral",
   contencioso: "Contencioso Administrativo",
   consumo: "Consumo",
-  extrajudicial: "Actuación Extrajudicial"
+  extrajudicial: "Actuación Extrajudicial",
+  exhortos: "Exhortos y Oficios — Ley 22.172"
 };
 
+/* ── EXHORTOS ── */
+DATA.exhortos = [
+  { nombre: "Diligenciamiento de cédula ley (por cada notificación)", uma: 5 },
+  { nombre: "Exhorto u oficio de inscripciones de dominio, hijuela, testamento, gravámenes, etc.", uma: 10 },
+  { nombre: "Exhorto u oficio de levantamiento de medidas", uma: 10 },
+  { nombre: "Exhorto u oficio de diligencia de prueba", uma: 10 },
+];
+
+/* ── ESCALAS PORCENTUALES (arts. 19, 21, 23 y 32 — Ley 4228-C) ── */
+const ESCALAS = [
+  {
+    nombre: "Honorarios 1ª instancia — parte VENCEDORA",
+    ref: "Arts. 19 y 21",
+    pctMin: 22, pctMax: 25,
+    nota: "Sobre el monto del proceso (capital + intereses). Mínimo absoluto: 10 UMA (art. 19)."
+  },
+  {
+    nombre: "Honorarios 1ª instancia — parte VENCIDA",
+    ref: "Arts. 19 y 21",
+    pctMin: 18, pctMax: 21,
+    nota: "Sobre el monto del proceso (capital + intereses). Mínimo absoluto: 10 UMA (art. 19)."
+  },
+  {
+    nombre: "Honorarios posteriores a sentencia (ejecución, planillas, etc.)",
+    ref: "Art. 20 último párrafo",
+    pctMin: 20, pctMax: 35,
+    nota: "Porcentaje sobre lo regulado en sentencia, por tareas posteriores a su dictado."
+  },
+  {
+    nombre: "Ejecución de honorarios — sin oposición",
+    ref: "Art. 32 inc. d)",
+    pctMin: 80, pctMax: 80, esDeHonorarios: true,
+    nota: "80% de la escala del art. 19 aplicada sobre el monto del proceso."
+  },
+  {
+    nombre: "Ejecución de honorarios — con oposición",
+    ref: "Art. 32 inc. d)",
+    pctMin: 18, pctMax: 25, esDeHonorarios: true,
+    nota: "Escala plena del art. 19 sin reducción (18%–25% según parte vencedora/vencida)."
+  },
+  {
+    nombre: "Transacción / desistimiento / caducidad — solo demanda y contestación",
+    ref: "Art. 23",
+    pctMin: 70, pctMax: 70, esReduccion: true,
+    nota: "70% de lo que correspondería según la escala completa."
+  },
+  {
+    nombre: "Transacción / desistimiento — con audiencia preliminar realizada",
+    ref: "Art. 23",
+    pctMin: 80, pctMax: 80, esReduccion: true,
+    nota: "80% de lo que correspondería según la escala completa."
+  },
+  {
+    nombre: "Transacción / desistimiento — con prueba producida",
+    ref: "Art. 23",
+    pctMin: 100, pctMax: 100, esReduccion: true,
+    nota: "100% de la escala completa (sin reducción)."
+  },
+  {
+    nombre: "Cuestión de puro derecho declarada",
+    ref: "Art. 23",
+    pctMin: 80, pctMax: 80, esReduccion: true,
+    nota: "80% de lo que correspondería según la escala completa."
+  },
+];
+
+/* ════════════ SISTEMA UMA ════════════ */
+const UMA_FALLBACK = 95626;
+const UMA_RES_FB   = "Res. SGA N° 1076/2026";
+const UMA_VIG_FB   = "1° de marzo de 2026";
+const UMA_JSON_URL = "https://raw.githubusercontent.com/victor-olivari/cotizador-honorarios-abogacia-chaco/main/uma-data.json";
+const CK  = 'uma_4228c_fab_v1';
+const TTL = 12 * 60 * 60 * 1000; // 12 horas
+
+let umaValor = UMA_FALLBACK;
 let fueroActivo = "familia";
-let umaValor = 92482;
+let selectedItem = null;
 
 function formatPesos(n) {
   return "$" + Math.round(n).toLocaleString("es-AR");
 }
 
+function getUMA() {
+  const v = parseFloat(document.getElementById("uma-valor").value);
+  return (!isNaN(v) && v > 0) ? v : UMA_FALLBACK;
+}
+
+function loadCache() {
+  try {
+    const d = JSON.parse(localStorage.getItem(CK));
+    if (d && d.valor && (Date.now() - d.ts) < TTL) return d;
+  } catch(e) {}
+  return null;
+}
+
+function saveCache(o) {
+  try { localStorage.setItem(CK, JSON.stringify({ valor: o.valor, res: o.res, vig: o.vig, ts: Date.now() })); } catch(e) {}
+}
+
+function mostrarUMA(o, estado) {
+  const inp   = document.getElementById("uma-valor");
+  const disp  = document.getElementById("uma-display");
+  const badge = document.getElementById("uma-badge");
+  const ref   = document.getElementById("uma-ref");
+
+  if (o && o.valor) { inp.value = o.valor; umaValor = o.valor; }
+
+  const val = Math.round(getUMA());
+  umaValor  = val;
+  disp.textContent = formatPesos(val);
+
+  const res = (o && o.res) || UMA_RES_FB;
+  const vig = (o && o.vig) || UMA_VIG_FB;
+  ref.innerHTML = res + ' &nbsp;·&nbsp; Vigente desde ' + vig +
+    ' &nbsp;·&nbsp; <a href="https://www.csjn.gov.ar/transparencia/uma" target="_blank" rel="noopener">csjn.gov.ar</a>';
+
+  const msgs = {
+    ok:       "✓ Actualizado desde CSJN",
+    cache:    "✓ Verificado recientemente",
+    manual:   "✎ Valor ingresado manualmente",
+    fallback: "⚠ Último valor conocido — verifique en CSJN",
+    error:    "⚠ Sin conexión — usando último valor conocido"
+  };
+  badge.className = (estado === 'ok' || estado === 'cache') ? 'badge-uma badge-ok' : 'badge-uma badge-warn';
+  badge.textContent = msgs[estado] || msgs.fallback;
+
+  renderLista();
+  // Si hay item seleccionado, actualizar el resultado
+  if (selectedItem !== null) {
+    const p = DATA[fueroActivo][selectedItem];
+    if (p) document.getElementById("res-pesos").textContent = formatPesos(p.uma * umaValor);
+  }
+}
+
+function xhrGet(url, timeout, cb) {
+  const x = new XMLHttpRequest();
+  let timedOut = false;
+  const t = setTimeout(() => { timedOut = true; try { x.abort(); } catch(e) {} cb(null); }, timeout);
+  x.onreadystatechange = function() {
+    if (x.readyState === 4) {
+      clearTimeout(t);
+      if (timedOut) return;
+      if (x.status >= 200 && x.status < 300) cb(x.responseText);
+      else cb(null);
+    }
+  };
+  x.onerror = () => { clearTimeout(t); if (!timedOut) cb(null); };
+  x.open('GET', url, true);
+  x.send();
+}
+
+function fetchUMA() {
+  if (location.protocol === 'file:') {
+    mostrarUMA(null, 'error');
+    return;
+  }
+  const btn = document.getElementById("btn-fetch");
+  btn.disabled = true;
+  btn.textContent = "Consultando…";
+
+  let done = false;
+  const safeTimer = setTimeout(() => {
+    if (!done) { done = true; btn.disabled = false; btn.textContent = "↻ Actualizar";
+      mostrarUMA(loadCache() || null, 'error'); }
+  }, 12000);
+
+  function fin(o, estado) {
+    if (done) return; done = true;
+    clearTimeout(safeTimer);
+    btn.disabled = false; btn.textContent = "↻ Actualizar";
+    if (o) saveCache(o);
+    mostrarUMA(o || loadCache() || null, estado);
+  }
+
+  // Nivel 1: JSON desde GitHub (CORS *, actualizado automáticamente)
+  xhrGet(UMA_JSON_URL, 6000, function(txt) {
+    if (txt) {
+      try {
+        const d = JSON.parse(txt);
+        if (d && d.valor && d.valor > 50000 && d.valor < 5000000) {
+          fin({ valor: d.valor, res: d.res || UMA_RES_FB, vig: d.vig || UMA_VIG_FB }, 'ok');
+          return;
+        }
+      } catch(e) {}
+    }
+    // Nivel 2: proxies CORS → CSJN
+    const TARGET = 'https://www.csjn.gov.ar/transparencia/uma';
+    const proxies = [
+      'https://corsproxy.io/?' + encodeURIComponent(TARGET),
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(TARGET)
+    ];
+    let tried = 0;
+    function tryProxy() {
+      if (tried >= proxies.length) { fin(null, 'error'); return; }
+      xhrGet(proxies[tried++], 5000, function(h) {
+        if (h && h.length > 200) {
+          const m = h.match(/\$\s*([\d\.]+)/);
+          if (m) {
+            const v = parseFloat(m[1].replace(/\./g, ''));
+            if (v > 50000 && v < 5000000) {
+              fin({ valor: Math.round(v), res: UMA_RES_FB, vig: UMA_VIG_FB }, 'ok');
+              return;
+            }
+          }
+        }
+        tryProxy();
+      });
+    }
+    tryProxy();
+  });
+}
+
+/* ════════════ RENDER ════════════ */
 function renderLista() {
   const busqueda = document.getElementById("buscador").value.toLowerCase();
-  const lista = document.getElementById("lista-procesos");
+  const lista    = document.getElementById("lista-procesos");
+  const panelEsc = document.getElementById("panel-escalas");
+
+  if (fueroActivo === "escalas") {
+    lista.style.display = "none";
+    panelEsc.style.display = "block";
+    renderEscalas();
+    return;
+  }
+
+  lista.style.display = "block";
+  panelEsc.style.display = "none";
+
+  const uma      = getUMA();
   const procesos = DATA[fueroActivo].filter(p =>
     p.nombre.toLowerCase().includes(busqueda)
   );
@@ -383,55 +722,134 @@ function renderLista() {
     lista.innerHTML = '<div class="empty">No se encontraron procesos.</div>';
     return;
   }
-  lista.innerHTML = procesos.map((p, i) => `
-    <div class="process-item" onclick="seleccionar('${fueroActivo}', ${DATA[fueroActivo].indexOf(p)})">
+  lista.innerHTML = procesos.map((p) => {
+    const realIdx = DATA[fueroActivo].indexOf(p);
+    return `
+    <div class="process-item" onclick="seleccionar('${fueroActivo}', ${realIdx})">
       <span class="nombre">${p.nombre}</span>
       <span class="uma-badge">${p.uma} UMA</span>
-      <span class="monto">${formatPesos(p.uma * umaValor)}</span>
+      <span class="monto">${formatPesos(p.uma * uma)}</span>
+    </div>`;
+  }).join("");
+}
+
+function renderEscalas() {
+  const lista = document.getElementById("lista-escalas");
+  lista.innerHTML = ESCALAS.map((e, i) => `
+    <div class="escala-item" id="esc-item-${i}" onclick="seleccionarEscala(${i})">
+      <div class="e-nombre">${e.nombre}</div>
+      <div class="e-detalle">${e.pctMin === e.pctMax ? e.pctMin + '%' : e.pctMin + '%–' + e.pctMax + '%'}</div>
+      <div class="e-ref">${e.ref}</div>
     </div>
   `).join("");
 }
 
+let escalaSeleccionada = null;
+
+function seleccionarEscala(idx) {
+  escalaSeleccionada = idx;
+  // marcar seleccionado
+  document.querySelectorAll(".escala-item").forEach((el, i) => {
+    el.classList.toggle("selected", i === idx);
+  });
+  const e = ESCALAS[idx];
+  const calc = document.getElementById("escala-calc");
+  calc.classList.add("visible");
+  document.getElementById("ec-titulo").textContent = e.nombre;
+  calcularEscala();
+}
+
+function calcularEscala() {
+  if (escalaSeleccionada === null) return;
+  const e = ESCALAS[escalaSeleccionada];
+  const montoInput = parseFloat((document.getElementById("monto-proceso") || {}).value || "0");
+  const monto = isNaN(montoInput) ? 0 : montoInput;
+
+  let bodyHTML = `
+    <div class="ec-label">Monto del proceso ($)</div>
+    <div class="monto-input-wrap">
+      <input type="number" id="monto-proceso" placeholder="Ej: 5000000" min="0" step="1"
+        inputmode="numeric" value="${monto > 0 ? monto : ''}"
+        oninput="calcularEscala()" />
+    </div>`;
+
+  if (monto > 0) {
+    const minPesos = monto * (e.pctMin / 100);
+    const maxPesos = e.pctMin === e.pctMax ? null : monto * (e.pctMax / 100);
+    const uma = getUMA();
+    const minUMA = uma > 0 ? (minPesos / uma).toFixed(1) : "—";
+    const maxUMA = (maxPesos && uma > 0) ? (maxPesos / uma).toFixed(1) : null;
+
+    bodyHTML += `<div class="ec-grid">
+      <div class="ec-metric">
+        <div class="eml">Honorario mínimo (${e.pctMin}%)</div>
+        <div class="emv">${formatPesos(minPesos)}</div>
+        <div style="font-size:11px;opacity:.65;margin-top:3px">${minUMA} UMA</div>
+      </div>`;
+
+    if (maxPesos) {
+      bodyHTML += `<div class="ec-metric">
+        <div class="eml">Honorario máximo (${e.pctMax}%)</div>
+        <div class="emv">${formatPesos(maxPesos)}</div>
+        <div style="font-size:11px;opacity:.65;margin-top:3px">${maxUMA} UMA</div>
+      </div>`;
+    }
+    bodyHTML += `</div>`;
+  } else {
+    bodyHTML += `<div class="ec-placeholder">Ingresá el monto para calcular</div>`;
+  }
+
+  bodyHTML += `<div class="ec-note">${e.nota}</div>`;
+  document.getElementById("ec-body").innerHTML = bodyHTML;
+}
+
 function seleccionar(fuero, idx) {
-  const p = DATA[fuero][idx];
+  selectedItem = idx;
+  const p    = DATA[fuero][idx];
+  const uma  = getUMA();
   const card = document.getElementById("result-card");
-  document.getElementById("res-fuero").textContent = FUERO_LABELS[fuero];
+  document.getElementById("res-fuero").textContent  = FUERO_LABELS[fuero];
   document.getElementById("res-nombre").textContent = p.nombre;
-  document.getElementById("res-uma").textContent = p.uma + " UMA";
-  document.getElementById("res-pesos").textContent = formatPesos(p.uma * umaValor);
+  document.getElementById("res-uma").textContent    = p.uma + " UMA";
+  document.getElementById("res-pesos").textContent  = formatPesos(p.uma * uma);
   card.classList.add("visible");
   card.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
+/* ════════════ INIT ════════════ */
 document.getElementById("uma-valor").addEventListener("input", function() {
   const v = parseFloat(this.value);
   if (!isNaN(v) && v > 0) {
-    umaValor = v;
-    document.getElementById("uma-display").textContent = "$" + Math.round(v).toLocaleString("es-AR");
-    renderLista();
-    const card = document.getElementById("result-card");
-    if (card.classList.contains("visible")) {
-      document.getElementById("res-pesos").textContent = formatPesos(
-        parseFloat(document.getElementById("res-uma").textContent) * umaValor
-      );
-    }
+    mostrarUMA({ valor: v, res: UMA_RES_FB, vig: UMA_VIG_FB }, 'manual');
   }
 });
+
+document.getElementById("btn-fetch").addEventListener("click", fetchUMA);
 
 document.querySelectorAll(".fuero-btn").forEach(btn => {
   btn.addEventListener("click", function() {
     document.querySelectorAll(".fuero-btn").forEach(b => b.classList.remove("active"));
     this.classList.add("active");
-    fueroActivo = this.dataset.fuero;
+    fueroActivo  = this.dataset.fuero;
+    selectedItem = null;
+    escalaSeleccionada = null;
     document.getElementById("buscador").value = "";
     document.getElementById("result-card").classList.remove("visible");
+    document.getElementById("escala-calc").classList.remove("visible");
+    // búsqueda visible solo en fueros normales
+    document.querySelector(".search-wrap").style.display =
+      fueroActivo === "escalas" ? "none" : "block";
     renderLista();
   });
 });
 
 document.getElementById("buscador").addEventListener("input", renderLista);
 
-renderLista();
+// Al cargar: usar caché si existe, si no el fallback
+window.addEventListener('DOMContentLoaded', function() {
+  const cached = loadCache();
+  mostrarUMA(cached || null, cached ? 'cache' : 'fallback');
+});
 </script>
 </body>
 </html>
